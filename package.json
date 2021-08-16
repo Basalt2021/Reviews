@@ -1,0 +1,31 @@
+{
+  "name": "reviews",
+  "version": "1.0.0",
+  "description": "Reviews portion SDC",
+  "main": "index.js",
+  "scripts": {
+    "server-dev": "npx nodemon server/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Basalt2021/Reviews.git"
+  },
+  "author": "Christian Gazmuri",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Basalt2021/Reviews/issues"
+  },
+  "homepage": "https://github.com/Basalt2021/Reviews#readme",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "bluebird": "^3.7.2",
+    "body-parser": "^1.19.0",
+    "csv-parser": "^3.0.0",
+    "csvtojson": "^2.0.10",
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "mongoose": "^5.13.7",
+    "morgan": "^1.10.0",
+    "path": "^0.12.7"
+  }
+}
