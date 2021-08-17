@@ -7,12 +7,11 @@ MongoClient.connect("mongodb://localhost:27017/", function (err, db) {
      var dbo = db.db("ProductReviews");
 
      var finalProductPipe = [
-       { $group: { _id: '$product_id' }},
-       { $sort: { _id: 1} },
+       { $group: { _id : '$product_id', product_id : {$first: '$product_id'}}},
        {
           $lookup : {
           "from": "newProduct",
-          "localField": "_id",
+          "localField": "product_id",
           "foreignField": "product_id",
           "as": "characteristics"
           }
@@ -20,12 +19,12 @@ MongoClient.connect("mongodb://localhost:27017/", function (err, db) {
        {
         $lookup : {
           "from": "ReviewsWithPhotos",
-          "localField": "_id",
+          "localField": "product_id",
           "foreignField": "product_id",
           "as": "results"
           }
        },
-       { $project: { 'characteristics.product_id': 0, 'results.product_id': 0, 'results.photos.review_id': 0} },
+       { $project: { '_id': 1, 'characteristics.product_id': 0, 'results.product_id': 0, 'results.photos.review_id': 0 } },
        { $out: 'finalProducts' }
      ]
 
@@ -66,7 +65,6 @@ MongoClient.connect("mongodb://localhost:27017/", function (err, db) {
       { $out: 'ReviewsWithPhotos'}
     ];
 
-    dbo.collection("ReviewsWithPhotos").drop();
     dbo.collection("ReviewChar").aggregate(charPipe).toArray();
     dbo.collection("Reviews").aggregate(pipeline).toArray();
     dbo.collection("Characteristics").aggregate(productPipe).toArray();

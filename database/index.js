@@ -3,11 +3,19 @@ mongoose.connect('mongodb://localhost/ProductReviews',
 { useNewUrlParser: true , useUnifiedTopology: true, useCreateIndex: true});
 const Schema = mongoose.Schema
 
-const fetchReviews = (callback) => {
-  var reviews = mongoose.model("reviews", new Schema({}), "Reviews");
-  reviews.find({})
+const fetchReviews = (params, callback) => {
+  var response = {
+    product: params['product_id'],
+    page: params['page'],
+    count: params['count'],
+    results: []
+  }
+  var product = parseInt(params.product_id)
+  var reviews = mongoose.model("reviews", new Schema({}), "ReviewsWithPhotos");
+  reviews.find({product_id: product}).limit(parseInt(params.count))
   .then((doc) => {
-    callback(doc);
+    response['results'] = doc;
+    callback(response);
   })
 }
 
